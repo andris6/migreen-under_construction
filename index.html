@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <title>Migreen Server Internals</title>
+  <style>
+    body {
+      font-family: Arial;
+    }
+  </style>
+  <script>
+    async function checkStatusAndRedirect() {
+      try {
+        const response = await fetch('status.txt');
+        if (!response.ok) throw new Error('Cannot get status.');
+        const status = (await response.text()).trim();
 
+        if (status === '0') {
+          window.location.href = 'https://migreen.app/';
+        } else if (status === '1') {
+          window.location.href = 'under_contruction.html';
+        } else {
+          document.body.innerHTML = `<h1>STATUS: ${status}</h1>`;
+        }
+      } catch (e) {
+        document.body.innerHTML = `<h1>ERROR: ${e.message}</h1>`;
+      }
+    }
+
+    window.onload = checkStatusAndRedirect;
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+</body>
+</html>
